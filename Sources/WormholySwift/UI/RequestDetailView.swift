@@ -73,8 +73,7 @@ internal struct RequestDetailView: View {
         .listStyle(.insetGrouped)
         .navigationTitle(URL(string: request.url)?.path ?? "Request Detail")
         .inlineToolbarTitle()
-        .toolbarBackground(.thinMaterial, for: .navigationBar)
-        .toolbarBackground(.visible, for: .navigationBar)
+        .conditionalToolbarBackground()
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Menu {
@@ -191,6 +190,18 @@ struct RequestDetailView_Previews: PreviewProvider {
         return Group {
             RequestDetailView(request: fakeRequest)
             RequestDetailView(request: fakeErrorRequest)
+        }
+    }
+}
+private extension View {
+    @ViewBuilder
+    func conditionalToolbarBackground() -> some View {
+        if #available(iOS 16.0, *) {
+            self
+                .toolbarBackground(.thinMaterial, for: .navigationBar)
+                .toolbarBackground(.visible, for: .navigationBar)
+        } else {
+            self
         }
     }
 }

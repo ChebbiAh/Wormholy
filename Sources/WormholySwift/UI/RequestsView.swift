@@ -35,7 +35,7 @@ public struct RequestsView: View {
 
 
     public var body: some View {
-        NavigationView {
+        makeContainerNavigation {
             listContent
                 .navigationTitle("Requests")
                 .navigationBarTitleDisplayMode(.large)
@@ -58,6 +58,19 @@ public struct RequestsView: View {
         .onChange(of: storage.requests, perform: { _ in applyFilters() })
         .onChange(of: searchText, perform: { _ in applyFilters() })
         .onChange(of: selectedStatusCodeRange, perform: { _ in applyFilters() })
+    }
+    
+    @ViewBuilder
+    private func makeContainerNavigation(@ViewBuilder completion: @escaping () -> some View) -> some View {
+        if #available(iOS 16.0, *) {
+            NavigationStack {
+                completion()
+            }
+        } else {
+            NavigationView {
+                completion()
+            }
+        }
     }
 
     @ViewBuilder
