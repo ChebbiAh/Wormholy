@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-internal struct RequestsView: View {
+public struct RequestsView: View {
     @State private var searchText = Storage.defaultFilter ?? ""
     @ObservedObject private var storage = Storage.shared
     @State private var filteredRequests: [RequestModel] = []
@@ -19,14 +19,22 @@ internal struct RequestsView: View {
     @State private var shareSourceRequests: [RequestModel] = []
     @Environment(\.dismiss) private var dismiss
 
-    init(requests: [RequestModel] = []) {
+    internal init(requests: [RequestModel] = []) {
         _filteredRequests = State(initialValue: requests)
         if let defaultFilter = Storage.defaultFilter, !defaultFilter.isEmpty {
             _searchText = State(initialValue: defaultFilter)
         }
     }
+    
+    public init() {
+        _filteredRequests = State(initialValue: [])
+        if let defaultFilter = Storage.defaultFilter, !defaultFilter.isEmpty {
+            _searchText = State(initialValue: defaultFilter)
+        }
+    }
 
-    var body: some View {
+
+    public var body: some View {
         NavigationStack {
             listContent
                 .navigationTitle("Requests")

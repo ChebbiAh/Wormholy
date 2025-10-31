@@ -104,7 +104,7 @@ public class Wormholy: NSObject
     }
     
     // MARK: - Navigation
-    static func presentWormholyFlow() {
+    public static func presentWormholyFlow() {
         // Check if RequestsView is already presented
         if let currentViewController = UIViewController.currentViewController(),
            currentViewController is UIHostingController<RequestsView> {
@@ -121,6 +121,11 @@ public class Wormholy: NSObject
             sheet.detents = [.large()]
         }
         UIViewController.currentViewController()?.present(hostingController, animated: true, completion: nil)
+    }
+    
+    public static func getRequestView() -> RequestsView {
+        let requestsView = RequestsView()
+        return requestsView
     }
     
     @objc public static var shakeEnabled: Bool = {
