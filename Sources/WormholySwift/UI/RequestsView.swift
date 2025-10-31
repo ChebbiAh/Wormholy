@@ -35,7 +35,7 @@ public struct RequestsView: View {
 
 
     public var body: some View {
-        NavigationStack {
+        NavigationView {
             listContent
                 .navigationTitle("Requests")
                 .navigationBarTitleDisplayMode(.large)
@@ -82,7 +82,7 @@ public struct RequestsView: View {
             }
         }
         .listStyle(.insetGrouped)
-        .scrollContentBackground(.visible)
+        .checkScrollContentBackground(.visible)
     }
 
     @ToolbarContentBuilder
@@ -187,5 +187,24 @@ struct RequestsView_Previews: PreviewProvider {
 
         return RequestsView(requests: fakeRequests)
             .previewInterfaceOrientation(.landscapeLeft)
+    }
+}
+
+private struct ScrollContentBackground: ViewModifier {
+    
+    let visibility: Visibility
+    
+    func body(content: Content) -> some View {
+        if #available(iOS 16.0, *) {
+            content.scrollContentBackground(visibility)
+        } else {
+            content
+        }
+    }
+}
+
+private extension View {
+    func checkScrollContentBackground(_ visibility: Visibility) -> some View {
+        modifier(ScrollContentBackground(visibility: visibility))
     }
 }
